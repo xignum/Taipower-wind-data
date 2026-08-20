@@ -17,7 +17,7 @@ Meant to be run on a schedule by the GitHub Actions workflow in
 import csv
 import os
 from datetime import datetime
-
+import json
 import requests
 
 URL = "https://service.taipower.com.tw/data/opendata/apply/file/d006001/001.json"
@@ -41,7 +41,7 @@ def fetch_and_save():
 
     resp = requests.get(URL, timeout=15)
     resp.raise_for_status()
-    data = resp.json()
+    data = json.loads(resp.content.decode("utf-8-sig"))
 
     fetch_time = datetime.now().isoformat(timespec="seconds")
     reported_time = data.get("DateTime", "")
