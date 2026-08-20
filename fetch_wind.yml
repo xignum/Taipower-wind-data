@@ -1,0 +1,37 @@
+name: Fetch wind generation data
+
+on:
+  schedule:
+    # Runs every 10 minutes. GitHub's scheduler can run a few minutes late
+    # during busy periods -- that's normal and fine for this use case.
+    - cron: "*/10 * * * *"
+  workflow_dispatch: {}  # lets you trigger a run manually from the Actions tab
+
+permissions:
+  contents: write  # needed so the workflow can commit the CSV back to the repo
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run fetch script
+        run: python fetch_wind.py
+
+      - name: Commit and push if data changed
+        run: |
+          git config user.name "wind-data-bot"
+          git config user.email "actions@github.com"
+          git add wind_logs/
+          git diff --staged --quiet || git commit -m "Update wind data $(date -u +'%Y-%m-%d %H:%M UTC')"
+          git push
