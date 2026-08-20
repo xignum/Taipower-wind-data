@@ -23,7 +23,7 @@ import requests
 # TODO: replace with the actual live JSON endpoint for dataset 8931
 # (台灣電力公司各機組發電量即時資訊). Grab this from the "資料下載網址" /
 # API link on the dataset's data.gov.tw page.
-URL = "PASTE_THE_LIVE_JSON_ENDPOINT_HERE"
+URL = "https://service.taipower.com.tw/data/opendata/apply/file/d006001/001.json"
 
 OUTPUT_DIR = "wind_logs"
 
