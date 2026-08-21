@@ -57,7 +57,14 @@ def fetch_and_save():
         print("No wind rows found in this pull — skipping.")
         return
 
-    out_path = os.path.join(OUTPUT_DIR, f"wind_realtime_{report_date}.csv")
+    report_dt = datetime.fromisoformat(reported_time) if reported_time else datetime.now()
+    year_folder = report_dt.strftime("%Y")
+    month_folder = report_dt.strftime("%m")
+
+    out_dir = os.path.join(OUTPUT_DIR, year_folder, month_folder)
+    os.makedirs(out_dir, exist_ok=True)
+
+    out_path = os.path.join(out_dir, f"wind_realtime_{report_date}.csv")
     file_exists = os.path.isfile(out_path)
 
     if file_exists:
