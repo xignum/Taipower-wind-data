@@ -1,8 +1,7 @@
 name: Fetch wind generation data
 
 on:
-  schedule:
-    - cron: "*/30 * * * *"
+
   workflow_dispatch: {}
 
 permissions:
